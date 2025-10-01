@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\AlmacenPedidoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\CierreAlmacenController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
@@ -19,9 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'permission:view dashboard'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified', 'permission:view dashboard'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
