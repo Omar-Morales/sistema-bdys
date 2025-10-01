@@ -10,6 +10,7 @@ class Tienda extends Model
     use HasFactory;
 
     protected $table = 'tiendas';
+    protected $fillable = ['nombre', 'sector', 'direccion', 'telefono'];
 
     public function vendedores()
     {

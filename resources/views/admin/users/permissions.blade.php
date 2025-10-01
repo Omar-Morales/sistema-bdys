@@ -17,19 +17,22 @@
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach ($modules as $moduleKey => $moduleLabel)
+                        @foreach ($modules as $moduleKey => $module)
                             @php
-                                $permissionName = 'view ' . $moduleKey;
+                                $permissionName = $module['permission'];
                             @endphp
                             <label class="flex items-start space-x-2">
                                 <input
                                     type="checkbox"
                                     name="permissions[]"
                                     value="{{ $permissionName }}"
-                                    class="mt-1"
+                                    class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
                                     {{ in_array($permissionName, $userPermissions, true) ? 'checked' : '' }}
                                 >
-                                <span>{{ $moduleLabel }}</span>
+                                <span>
+                                    <span class="block font-medium text-gray-700">{{ $module['label'] }}</span>
+                                    <span class="block text-xs text-gray-500">{{ $module['route'] }}</span>
+                                </span>
                             </label>
                         @endforeach
                     </div>
