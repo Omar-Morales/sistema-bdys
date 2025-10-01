@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\UserPermissionController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,7 +13,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'permission:view dashboard'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -19,31 +21,33 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'role:Supervisor'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('roles-permissions', [RolePermissionController::class, 'index'])->name('roles.permissions.index');
+    Route::put('roles-permissions', [RolePermissionController::class, 'update'])->name('roles.permissions.update');
+
+    Route::resource('users', AdminUserController::class)->except(['show', 'destroy']);
+    Route::get('users/{user}/permissions', [UserPermissionController::class, 'edit'])->name('users.permissions.edit');
+    Route::put('users/{user}/permissions', [UserPermissionController::class, 'update'])->name('users.permissions.update');
+});
+
 require __DIR__.'/auth.php';
 
-// Ruta de prueba para verificar rol
 Route::get('/test', function () {
-    /** @var User|null $user */
+    /** @var \App\Models\User|null $user */
     $user = Auth::user();
-    $rol  = $user ? $user->rol : null;
+    $roles = $user ? $user->getRoleNames()->implode(', ') : null;
 
     return response()->json([
-        'usuario'   => $user,
-        'tiene_rol' => $rol ? $rol->nombre : 'No tiene rol',
+        'usuario' => $user,
+        'roles' => $roles ?: 'Sin roles',
+        'permisos' => $user ? $user->getPermissionNames() : [],
     ]);
 })->middleware(['auth']);
 
-// Ruta protegida solo para adminö
-Route::get('/admin', function () {
-    return 'Acceso permitido: Admin';
-})->middleware(['auth', 'role:admin'])->name('admin');
+Route::get('/supervisor', function () {
+    return 'Acceso permitido: Supervisor';
+})->middleware(['auth', 'role:Supervisor'])->name('supervisor');
 
-// Ruta protegida solo para encargado
 Route::get('/encargado', function () {
     return 'Acceso permitido: Encargado';
-})->middleware(['auth', 'role:encargado'])->name('encargado');
-
-// Ruta protegida solo para almacen
-Route::get('/almacen', function () {
-    return 'Acceso permitido: Almacen';
-})->middleware(['auth', 'role:almacen'])->name('almacen');
+})->middleware(['auth', 'role:Encargado'])->name('encargado');

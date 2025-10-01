@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,15 +14,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            PermissionsSeeder::class,
             RolesSeeder::class,
         ]);
 
-        // También puedes crear un usuario admin si quieres:
-        \App\Models\User::factory()->create([
-            'name' => 'Admin BDYS',
-            'email' => 'admin@bdys.com',
-            'password' => bcrypt('12345678'),
-            'rol_id' => 1, // admin
-        ]);
+        $supervisorEmail = 'admin@bdys.com';
+
+        $user = User::firstOrCreate(
+            ['email' => $supervisorEmail],
+            [
+                'name' => 'Supervisor BDYS',
+                'password' => Hash::make('12345678'),
+            ]
+        );
+
+        if (!$user->hasRole('Supervisor')) {
+            $user->assignRole('Supervisor');
+        }
     }
 }
