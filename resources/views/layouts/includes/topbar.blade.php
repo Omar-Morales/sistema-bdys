@@ -24,7 +24,7 @@
             </svg>
             <span>{{ __('Buscar...') }}</span>
         </div>
-        <x-dropdown align="right" width="48">
+        <x-dropdown align="right" width="56" content-classes="bg-white/95 p-2 backdrop-blur">
             <x-slot name="trigger">
                 <button class="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 text-left text-sm font-medium text-slate-600 shadow-sm transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1">
                     <div class="flex flex-col leading-tight">

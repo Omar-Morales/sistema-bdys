@@ -17,6 +17,7 @@
     <body class="font-sans antialiased bg-slate-100" x-data="{ sidebarOpen: false }">
         <div class="flex min-h-screen overflow-hidden">
             <div
+                x-cloak
                 class="fixed inset-0 z-20 bg-slate-900/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
                 x-show="sidebarOpen"
                 x-transition.opacity
