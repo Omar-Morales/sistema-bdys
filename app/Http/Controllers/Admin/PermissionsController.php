@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
@@ -22,7 +23,10 @@ class PermissionsController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $modules = collect(config('modules.menus'));
-        $modulePermissions = $modules->pluck('permission')->filter()->values();
+        $modulePermissions = $modules
+            ->map(fn (array $module, string $key) => $this->normalizePermissions($module, $key)['view'] ?? null)
+            ->filter()
+            ->values();
 
         $validated = $request->validate([
             'roles' => ['nullable', 'array'],
@@ -41,5 +45,16 @@ class PermissionsController extends Controller
         }
 
         return redirect()->route('admin.permissions.index')->with('status', 'Permisos de visualización actualizados.');
+    }
+
+    private function normalizePermissions(array $module, string $moduleKey): array
+    {
+        $permissions = $module['permissions'] ?? [];
+
+        if (!isset($permissions['view'])) {
+            $permissions = ['view' => $module['permission'] ?? 'view '.$moduleKey] + $permissions;
+        }
+
+        return Arr::whereNotNull($permissions);
     }
 }

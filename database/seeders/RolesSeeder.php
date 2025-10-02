@@ -3,24 +3,27 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 
 class RolesSeeder extends Seeder
 {
     public function run(): void
     {
-        $modules = config('modules.menus');
-        $moduleKeys = array_keys($modules);
+        $modules = collect(config('modules.menus'));
 
-        $viewPermissions = collect($modules)
-            ->map(fn (array $module, string $key) => $module['permission'] ?? 'view '.$key);
+        $viewPermissions = $modules
+            ->map(fn (array $module, string $key) => $module['permissions']['view'] ?? $module['permission'] ?? 'view '.$key);
 
-        $managePermissions = collect(PermissionsSeeder::CRUD_MODULES)
-            ->filter(fn (string $module) => in_array($module, $moduleKeys, true))
-            ->map(fn (string $module) => 'manage '.$module);
+        $managePermissions = $modules
+            ->map(fn (array $module) => $module['permissions']['manage'] ?? null)
+            ->filter()
+            ->values();
 
         $supervisorPermissions = $viewPermissions
             ->merge($managePermissions)
+            ->unique()
+            ->values()
             ->all();
 
         $supervisor = Role::firstOrCreate([
@@ -29,9 +32,12 @@ class RolesSeeder extends Seeder
         ]);
         $supervisor->syncPermissions($supervisorPermissions);
 
-        $encargadoPermissions = collect(['dashboard', 'productos', 'pedidos', 'almacen_pedidos'])
-            ->filter(fn (string $module) => array_key_exists($module, $modules))
-            ->map(fn (string $module) => $modules[$module]['permission'] ?? 'view '.$module)
+        $encargadoModules = collect(['dashboard', 'productos', 'pedidos', 'almacen_pedidos']);
+
+        $encargadoPermissions = $encargadoModules
+            ->filter(fn (string $module) => $modules->has($module))
+            ->map(fn (string $module) => Arr::get($modules[$module]['permissions'] ?? [], 'view', 'view '.$module))
+            ->values()
             ->all();
 
         $encargado = Role::firstOrCreate([

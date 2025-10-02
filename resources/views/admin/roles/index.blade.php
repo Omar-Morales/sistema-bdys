@@ -23,21 +23,36 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach ($modules as $moduleKey => $module)
                                         @php
-                                            $permissionName = $module['permission'];
+                                            $permissions = $module['permissions'] ?? [];
+                                            $permissionLabels = [
+                                                'view' => __('Ver'),
+                                                'manage' => __('Gestionar'),
+                                            ];
                                         @endphp
-                                        <label class="flex items-start space-x-2">
-                                            <input
-                                                type="checkbox"
-                                                name="roles[{{ $role->id }}][]"
-                                                value="{{ $permissionName }}"
-                                                class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                                                {{ $role->permissions->contains('name', $permissionName) ? 'checked' : '' }}
-                                            >
-                                            <span>
-                                                <span class="block font-medium text-gray-700">{{ $module['label'] }}</span>
-                                                <span class="block text-xs text-gray-500">{{ $module['route'] }}</span>
-                                            </span>
-                                        </label>
+                                        <div class="border border-gray-200 rounded-lg p-4">
+                                            <div class="flex justify-between items-start">
+                                                <div>
+                                                    <span class="block font-medium text-gray-800">{{ $module['label'] }}</span>
+                                                    @isset($module['route'])
+                                                        <span class="block text-xs text-gray-500">{{ $module['route'] }}</span>
+                                                    @endisset
+                                                </div>
+                                            </div>
+                                            <div class="mt-3 space-y-2">
+                                                @foreach ($permissions as $type => $permissionName)
+                                                    <label class="flex items-center space-x-2 text-sm text-gray-700">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="roles[{{ $role->id }}][]"
+                                                            value="{{ $permissionName }}"
+                                                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                            {{ $role->permissions->contains('name', $permissionName) ? 'checked' : '' }}
+                                                        >
+                                                        <span>{{ $permissionLabels[$type] ?? ucfirst($type) }}</span>
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>

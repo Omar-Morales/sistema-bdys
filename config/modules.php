@@ -5,47 +5,70 @@ return [
         'dashboard' => [
             'label' => 'Dashboard',
             'route' => 'dashboard',
-            'permission' => 'view dashboard',
+            'permissions' => [
+                'view' => 'view dashboard',
+            ],
         ],
         'tiendas' => [
             'label' => 'Tiendas',
             'route' => 'tiendas.index',
-            'permission' => 'view tiendas',
+            'permissions' => [
+                'view' => 'view tiendas',
+                'manage' => 'manage tiendas',
+            ],
         ],
         'vendedores' => [
             'label' => 'Vendedores',
             'route' => 'vendedores.index',
-            'permission' => 'view vendedores',
+            'permissions' => [
+                'view' => 'view vendedores',
+                'manage' => 'manage vendedores',
+            ],
         ],
         'categorias' => [
             'label' => 'Categorías',
             'route' => 'categorias.index',
-            'permission' => 'view categorias',
+            'permissions' => [
+                'view' => 'view categorias',
+                'manage' => 'manage categorias',
+            ],
         ],
         'productos' => [
             'label' => 'Productos',
             'route' => 'productos.index',
-            'permission' => 'view productos',
+            'permissions' => [
+                'view' => 'view productos',
+                'manage' => 'manage productos',
+            ],
         ],
         'pedidos' => [
             'label' => 'Pedidos',
             'route' => 'supervisor.pedidos.index',
-            'permission' => 'view pedidos',
+            'permissions' => [
+                'view' => 'view pedidos',
+                'manage' => 'manage pedidos',
+            ],
         ],
         'almacen_pedidos' => [
             'label' => 'Pedidos de Almacén',
             'route' => 'almacen.pedidos.index',
-            'permission' => 'view pedidos almacenes',
+            'permissions' => [
+                'view' => 'view pedidos almacenes',
+            ],
         ],
         'cierres' => [
             'label' => 'Cierre Diario',
             'route' => 'supervisor.cierres.index',
-            'permission' => 'view cierres',
+            'permissions' => [
+                'view' => 'view cierres',
+            ],
         ],
         'admin_permisos' => [
             'label' => 'Permisos',
             'route' => 'admin.permissions.index',
-            'permission' => 'view admin permisos',
+            'permissions' => [
+                'view' => 'view admin permisos',
+            ],
         ],
     ],
 ];
