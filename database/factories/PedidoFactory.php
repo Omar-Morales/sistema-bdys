@@ -32,7 +32,6 @@ class PedidoFactory extends Factory
             'tienda_id' => Tienda::factory(),
             'vendedor_id' => Vendedor::factory(),
             'almacen_id' => Almacen::factory(),
-            'almacen_destino_id' => Almacen::factory(),
             'encargado_id' => User::factory(),
             'monto_total' => $montoTotal,
             'monto_pagado' => $montoPagado,

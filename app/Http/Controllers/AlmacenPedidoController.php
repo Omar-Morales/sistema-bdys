@@ -14,8 +14,8 @@ class AlmacenPedidoController extends Controller
 
         abort_if(empty($almacenId), 403, 'El usuario no tiene un almacén asignado.');
 
-        $pedidos = Pedido::with(['tienda', 'vendedor', 'almacen', 'almacenDestino', 'encargado'])
-            ->where('almacen_destino_id', $almacenId)
+        $pedidos = Pedido::with(['tienda', 'vendedor', 'almacen', 'encargado'])
+            ->where('almacen_id', $almacenId)
             ->latest()
             ->paginate(20);
 
@@ -27,9 +27,9 @@ class AlmacenPedidoController extends Controller
         $almacenId = $request->user()?->almacen_id;
 
         abort_if(empty($almacenId), 403, 'El usuario no tiene un almacén asignado.');
-        abort_if((int) $pedido->almacen_destino_id !== (int) $almacenId, 403);
+        abort_if((int) $pedido->almacen_id !== (int) $almacenId, 403);
 
-        $pedido->load(['tienda', 'vendedor', 'almacen', 'almacenDestino', 'encargado', 'detalles.producto']);
+        $pedido->load(['tienda', 'vendedor', 'almacen', 'encargado', 'detalles.producto']);
         $cambio = max((float) $pedido->monto_pagado - (float) $pedido->monto_total, 0);
 
         return view('almacen.pedidos.show', compact('pedido', 'cambio'));

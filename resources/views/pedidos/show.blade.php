@@ -35,12 +35,8 @@
                             <p class="mt-1 text-lg text-gray-900">{{ $pedido->vendedor?->nombre }}</p>
                         </div>
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('Almacén origen') }}</h3>
-                            <p class="mt-1 text-gray-900">{{ $pedido->almacen?->nombre }}</p>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-medium text-gray-500">{{ __('Almacén destino') }}</h3>
-                            <p class="mt-1 text-gray-900">{{ $pedido->almacenDestino?->nombre ?? __('Sin destino') }}</p>
+                            <h3 class="text-sm font-medium text-gray-500">{{ __('Almacén') }}</h3>
+                            <p class="mt-1 text-gray-900">{{ $pedido->almacen?->nombre ?? __('Sin almacén') }}</p>
                         </div>
                         <div>
                             <h3 class="text-sm font-medium text-gray-500">{{ __('Encargado') }}</h3>

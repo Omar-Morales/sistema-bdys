@@ -29,7 +29,6 @@ class StorePedidoRequest extends FormRequest
             'tienda_id' => ['required', 'exists:tiendas,id'],
             'vendedor_id' => ['required', 'exists:vendedores,id'],
             'almacen_id' => ['required', 'exists:almacenes,id'],
-            'almacen_destino_id' => ['nullable', 'exists:almacenes,id'],
             'encargado_id' => ['required', 'exists:users,id'],
             'monto_total' => ['required', 'numeric', 'min:0'],
             'monto_pagado' => ['nullable', 'numeric', 'min:0'],

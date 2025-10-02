@@ -49,7 +49,7 @@
                                 @forelse ($cierres as $cierre)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ \Carbon\Carbon::parse($cierre->fecha)->format('d/m/Y') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $cierre->almacen_nombre ?? __('Sin destino') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $cierre->almacen_nombre ?? __('Sin almacén') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">S/ {{ number_format($cierre->total_monto, 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">S/ {{ number_format($cierre->total_pagado, 2) }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">S/ {{ number_format($cierre->total_pendiente, 2) }}</td>
