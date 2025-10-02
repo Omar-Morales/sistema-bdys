@@ -5,51 +5,69 @@
     'emptyMessage' => 'No hay datos disponibles.',
 ])
 
-<div {{ $attributes->merge(['class' => 'bg-white shadow rounded-lg']) }}>
-    <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">{{ $title }}</h3>
+<div
+    {{
+        $attributes->merge([
+            'class' => 'flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm',
+        ])
+    }}
+>
+    <div class="border-b border-slate-200 px-6 py-5">
+        @if ($title)
+            <h3 class="text-lg font-semibold text-slate-900">{{ $title }}</h3>
+        @endif
+
+        @if (! $slot->isEmpty())
+            <p class="mt-2 text-sm text-slate-500">
+                {{ $slot }}
+            </p>
+        @endif
     </div>
-    <div class="px-4 py-5 sm:p-6">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Estado
-                        </th>
-                        @foreach ($columns as $column)
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider {{ $column['headerClass'] ?? '' }}">
-                                {{ $column['label'] }}
-                            </th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($rows as $row)
+
+    <div class="px-2 pb-6 pt-4 sm:px-4">
+        <div class="overflow-hidden">
+            <div class="max-w-full overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                    <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ $row['label'] }}
-                            </td>
+                            <th scope="col" class="whitespace-nowrap px-6 py-3 text-left">
+                                {{ __('Estado') }}
+                            </th>
                             @foreach ($columns as $column)
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 {{ $column['class'] ?? '' }}">
-                                    {{ data_get($row['values'], $column['key']) }}
-                                </td>
+                                <th
+                                    scope="col"
+                                    class="whitespace-nowrap px-6 py-3 {{ $column['headerClass'] ?? 'text-left' }}"
+                                >
+                                    {{ $column['label'] }}
+                                </th>
                             @endforeach
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="{{ count($columns) + 1 }}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                                {{ $emptyMessage }}
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        @if (! $slot->isEmpty())
-            <div class="mt-4 text-sm text-gray-500">
-                {{ $slot }}
+                    </thead>
+                    <tbody class="divide-y divide-slate-200 bg-white">
+                        @forelse ($rows as $row)
+                            <tr class="odd:bg-white even:bg-slate-50 hover:bg-slate-100/70">
+                                <td class="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-700">
+                                    {{ $row['label'] }}
+                                </td>
+                                @foreach ($columns as $column)
+                                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600 {{ $column['class'] ?? '' }}">
+                                        {{ data_get($row['values'], $column['key']) }}
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @empty
+                            <tr>
+                                <td
+                                    colspan="{{ count($columns) + 1 }}"
+                                    class="whitespace-nowrap px-6 py-4 text-center text-sm text-slate-500"
+                                >
+                                    {{ $emptyMessage }}
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-        @endif
+        </div>
     </div>
 </div>
