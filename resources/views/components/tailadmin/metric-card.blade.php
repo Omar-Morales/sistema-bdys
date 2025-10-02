@@ -5,24 +5,24 @@
     'icon' => null,
     'badge' => null,
     'badgeColor' => 'primary',
-    'iconClasses' => 'bg-indigo-100 text-indigo-600',
+    'iconClasses' => 'bg-indigo-50 text-indigo-600',
 ])
 
 @php
-    use Illuminate\View\ComponentSlot;
+    use Illuminate\\View\\ComponentSlot;
 
     $iconContent = $icon instanceof ComponentSlot ? $icon->toHtml() : $icon;
-    $hasIcon = filled(trim((string) $iconContent ?? ''));
+    $hasIcon = filled(trim((string) ($iconContent ?? '')));
 
     $badgeContent = $badge instanceof ComponentSlot ? $badge->toHtml() : $badge;
-    $hasBadge = filled(trim((string) $badgeContent ?? ''));
+    $hasBadge = filled(trim((string) ($badgeContent ?? '')));
 
     $badgePalettes = [
-        'primary' => 'bg-indigo-100 text-indigo-600',
-        'success' => 'bg-emerald-100 text-emerald-600',
-        'warning' => 'bg-amber-100 text-amber-600',
-        'danger' => 'bg-rose-100 text-rose-600',
-        'info' => 'bg-sky-100 text-sky-600',
+        'primary' => 'bg-indigo-50 text-indigo-600 ring-indigo-100',
+        'success' => 'bg-emerald-50 text-emerald-600 ring-emerald-100',
+        'warning' => 'bg-amber-50 text-amber-600 ring-amber-100',
+        'danger' => 'bg-rose-50 text-rose-600 ring-rose-100',
+        'info' => 'bg-sky-50 text-sky-600 ring-sky-100',
     ];
 
     $badgeClasses = $badgePalettes[$badgeColor] ?? $badgePalettes['primary'];
@@ -31,30 +31,30 @@
 <div
     {{
         $attributes->merge([
-            'class' => 'group rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+            'class' => 'relative overflow-hidden rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
         ])
     }}
 >
     <div class="flex items-start justify-between gap-4">
         <div class="flex items-center gap-4">
             @if ($hasIcon)
-                <div class="flex h-14 w-14 items-center justify-center rounded-full {{ $iconClasses }}">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl {{ $iconClasses }}">
                     {!! $iconContent !!}
                 </div>
             @endif
 
-            <div class="flex-1 space-y-2">
+            <div class="space-y-2">
                 @if ($title)
                     <p class="text-sm font-medium text-slate-500">{{ $title }}</p>
                 @endif
 
                 <div class="flex flex-wrap items-center gap-3">
                     @isset($value)
-                        <p class="text-2xl font-semibold text-slate-900">{{ $value }}</p>
+                        <p class="text-3xl font-semibold tracking-tight text-slate-900">{{ $value }}</p>
                     @endisset
 
                     @if ($hasBadge)
-                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold {{ $badgeClasses }}">
+                        <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset {{ $badgeClasses }}">
                             {!! $badgeContent !!}
                         </span>
                     @endif

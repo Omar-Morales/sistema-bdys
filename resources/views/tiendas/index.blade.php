@@ -1,78 +1,77 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h1 class="text-2xl font-semibold tracking-tight text-slate-900">
                 {{ __('Tiendas') }}
-            </h2>
+            </h1>
             @can('manage tiendas')
                 <a href="{{ route('tiendas.create') }}"
-                    class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                     {{ __('Agregar tienda') }}
                 </a>
             @endcan
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 space-y-4">
-                    @if (session('status'))
-                        <div class="rounded-md bg-green-50 p-4 text-sm text-green-700">{{ session('status') }}</div>
-                    @endif
+    <section class="space-y-6">
+        @if (session('status'))
+            <x-tailadmin.alert type="success">
+                {{ session('status') }}
+            </x-tailadmin.alert>
+        @endif
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Nombre') }}</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Sector') }}</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Teléfono') }}</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">{{ __('Acciones') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse ($tiendas as $tienda)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <a href="{{ route('tiendas.show', $tienda) }}" class="text-indigo-600 hover:text-indigo-900">{{ $tienda->nombre }}</a>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $tienda->sector }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $tienda->telefono }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                            @can('manage tiendas')
-                                                <div class="flex items-center justify-end gap-2">
-                                                    <a href="{{ route('tiendas.edit', $tienda) }}"
-                                                        class="inline-flex items-center rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                                        {{ __('Actualizar') }}
-                                                    </a>
-                                                    <form action="{{ route('tiendas.destroy', $tienda) }}" method="POST"
-                                                        onsubmit="return confirm('{{ __('¿Eliminar esta tienda?') }}');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="inline-flex items-center rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-red-600 transition duration-150 ease-in-out hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                                            {{ __('Eliminar') }}
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            @endcan
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">{{ __('No se encontraron tiendas.') }}</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+        <x-tailadmin.table-card
+            :title="__('Tiendas registradas')"
+            :description="__('Gestiona las tiendas disponibles y su información de contacto.')"
+            :headers="[
+                ['label' => __('Nombre')],
+                ['label' => __('Sector')],
+                ['label' => __('Teléfono')],
+                ['label' => __('Acciones'), 'class' => 'text-right'],
+            ]"
+        >
+            @forelse ($tiendas as $tienda)
+                <tr class="odd:bg-white even:bg-slate-50">
+                    <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-900">
+                        <a href="{{ route('tiendas.show', $tienda) }}" class="text-indigo-600 transition hover:text-indigo-500">
+                            {{ $tienda->nombre }}
+                        </a>
+                    </td>
+                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{{ $tienda->sector }}</td>
+                    <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{{ $tienda->telefono }}</td>
+                    <td class="whitespace-nowrap px-6 py-4 text-right text-sm">
+                        @can('manage tiendas')
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('tiendas.edit', $tienda) }}"
+                                    class="inline-flex items-center gap-2 rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-sm font-medium text-indigo-600 shadow-sm transition hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    {{ __('Actualizar') }}
+                                </a>
+                                <form action="{{ route('tiendas.destroy', $tienda) }}" method="POST"
+                                    onsubmit="return confirm('{{ __('¿Eliminar esta tienda?') }}');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="inline-flex items-center gap-2 rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-sm font-medium text-rose-600 shadow-sm transition hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
+                                        {{ __('Eliminar') }}
+                                    </button>
+                                </form>
+                            </div>
+                        @endcan
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-sm text-slate-500">
+                        {{ __('No se encontraron tiendas.') }}
+                    </td>
+                </tr>
+            @endforelse
 
-                    <div>
-                        {{ $tiendas->links() }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            @if ($tiendas->hasPages())
+                <x-slot:footer>
+                    {{ $tiendas->links() }}
+                </x-slot:footer>
+            @endif
+        </x-tailadmin.table-card>
+    </section>
 </x-app-layout>
