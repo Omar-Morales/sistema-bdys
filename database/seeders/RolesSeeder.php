@@ -12,8 +12,8 @@ class RolesSeeder extends Seeder
         $modules = config('modules.menus');
         $moduleKeys = array_keys($modules);
 
-        $viewPermissions = collect($moduleKeys)
-            ->map(fn (string $module) => 'view '.$module);
+        $viewPermissions = collect($modules)
+            ->map(fn (array $module, string $key) => $module['permission'] ?? 'view '.$key);
 
         $managePermissions = collect(PermissionsSeeder::CRUD_MODULES)
             ->filter(fn (string $module) => in_array($module, $moduleKeys, true))
@@ -29,9 +29,9 @@ class RolesSeeder extends Seeder
         ]);
         $supervisor->syncPermissions($supervisorPermissions);
 
-        $encargadoPermissions = collect(['dashboard', 'productos', 'pedidos', 'cobros'])
+        $encargadoPermissions = collect(['dashboard', 'productos', 'pedidos', 'almacen_pedidos'])
             ->filter(fn (string $module) => array_key_exists($module, $modules))
-            ->map(fn (string $module) => 'view '.$module)
+            ->map(fn (string $module) => $modules[$module]['permission'] ?? 'view '.$module)
             ->all();
 
         $encargado = Role::firstOrCreate([
