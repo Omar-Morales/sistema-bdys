@@ -1,69 +1,70 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h1 class="text-2xl font-semibold tracking-tight text-slate-900">
             {{ __('Asignar permisos a roles') }}
-        </h2>
+        </h1>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                @if (session('status'))
-                    <div class="mb-4 text-green-600">{{ session('status') }}</div>
-                @endif
+    <section class="space-y-6">
+        @if (session('status'))
+            <x-tailadmin.alert type="success">
+                {{ session('status') }}
+            </x-tailadmin.alert>
+        @endif
 
-                <form method="POST" action="{{ route('admin.roles.permissions.update') }}">
-                    @csrf
-                    @method('PUT')
+        <x-tailadmin.section-card
+            :title="__('Configuración de permisos')"
+            :description="__('Selecciona los permisos que corresponden a cada rol disponible en la plataforma.')"
+        >
+            <form method="POST" action="{{ route('admin.roles.permissions.update') }}" class="space-y-8">
+                @csrf
+                @method('PUT')
 
-                    <div class="space-y-8">
-                        @foreach ($roles as $role)
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-700 mb-4">{{ $role->name }}</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    @foreach ($modules as $moduleKey => $module)
-                                        @php
-                                            $permissions = $module['permissions'] ?? [];
-                                            $permissionLabels = [
-                                                'view' => __('Ver'),
-                                                'manage' => __('Gestionar'),
-                                            ];
-                                        @endphp
-                                        <div class="border border-gray-200 rounded-lg p-4">
-                                            <div class="flex justify-between items-start">
-                                                <div>
-                                                    <span class="block font-medium text-gray-800">{{ $module['label'] }}</span>
-                                                    @isset($module['route'])
-                                                        <span class="block text-xs text-gray-500">{{ $module['route'] }}</span>
-                                                    @endisset
-                                                </div>
-                                            </div>
-                                            <div class="mt-3 space-y-2">
-                                                @foreach ($permissions as $type => $permissionName)
-                                                    <label class="flex items-center space-x-2 text-sm text-gray-700">
-                                                        <input
-                                                            type="checkbox"
-                                                            name="roles[{{ $role->id }}][]"
-                                                            value="{{ $permissionName }}"
-                                                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                                                            {{ $role->permissions->contains('name', $permissionName) ? 'checked' : '' }}
-                                                        >
-                                                        <span>{{ $permissionLabels[$type] ?? ucfirst($type) }}</span>
-                                                    </label>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endforeach
+                @foreach ($roles as $role)
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-slate-800">{{ $role->name }}</h3>
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            @foreach ($modules as $moduleKey => $module)
+                                @php
+                                    $permissions = $module['permissions'] ?? [];
+                                    $permissionLabels = [
+                                        'view' => __('Ver'),
+                                        'manage' => __('Gestionar'),
+                                    ];
+                                @endphp
+
+                                <div class="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-sm font-semibold text-slate-900">{{ $module['label'] }}</span>
+                                        @isset($module['route'])
+                                            <span class="text-xs text-slate-500">{{ $module['route'] }}</span>
+                                        @endisset
+                                    </div>
+
+                                    <div class="mt-4 space-y-2">
+                                        @foreach ($permissions as $type => $permissionName)
+                                            <label class="flex items-center gap-2 text-sm text-slate-600">
+                                                <input
+                                                    type="checkbox"
+                                                    name="roles[{{ $role->id }}][]"
+                                                    value="{{ $permissionName }}"
+                                                    class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                    {{ $role->permissions->contains('name', $permissionName) ? 'checked' : '' }}
+                                                >
+                                                <span>{{ $permissionLabels[$type] ?? ucfirst($type) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        </div>
                     </div>
+                @endforeach
 
-                    <div class="mt-6">
-                        <x-primary-button>{{ __('Guardar cambios') }}</x-primary-button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+                <div>
+                    <x-primary-button>{{ __('Guardar cambios') }}</x-primary-button>
+                </div>
+            </form>
+        </x-tailadmin.section-card>
+    </section>
 </x-app-layout>

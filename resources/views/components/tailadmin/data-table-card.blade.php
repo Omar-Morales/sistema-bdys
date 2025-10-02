@@ -5,26 +5,43 @@
     'emptyMessage' => 'No hay datos disponibles.',
 ])
 
+@php
+    use Illuminate\\View\\ComponentSlot;
+
+    $hasDescription = ! $slot->isEmpty();
+    $hasActions = isset($actions) && $actions instanceof ComponentSlot && trim($actions->toHtml()) !== '';
+@endphp
+
 <div
     {{
         $attributes->merge([
-            'class' => 'flex flex-col rounded-2xl border border-slate-200 bg-white shadow-sm',
+            'class' => 'overflow-hidden rounded-2xl border border-slate-200 bg-white/95 shadow-sm',
         ])
     }}
 >
-    <div class="border-b border-slate-200 px-6 py-5">
-        @if ($title)
-            <h3 class="text-lg font-semibold text-slate-900">{{ $title }}</h3>
-        @endif
+    @if ($title || $hasDescription || $hasActions)
+        <div class="flex flex-col gap-4 border-b border-slate-200 px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <div class="space-y-1">
+                @if ($title)
+                    <h3 class="text-lg font-semibold text-slate-900">{{ $title }}</h3>
+                @endif
 
-        @if (! $slot->isEmpty())
-            <p class="mt-2 text-sm text-slate-500">
-                {{ $slot }}
-            </p>
-        @endif
-    </div>
+                @if ($hasDescription)
+                    <p class="text-sm text-slate-500">
+                        {{ $slot }}
+                    </p>
+                @endif
+            </div>
 
-    <div class="px-2 pb-6 pt-4 sm:px-4">
+            @if ($hasActions)
+                <div class="flex flex-wrap items-center gap-2">
+                    {{ $actions }}
+                </div>
+            @endif
+        </div>
+    @endif
+
+    <div class="px-4 pb-6 pt-4 sm:px-6">
         <div class="overflow-hidden">
             <div class="max-w-full overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200 text-left text-sm">

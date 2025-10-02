@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <h1 class="text-2xl font-semibold tracking-tight text-slate-900">
                 {{ __('Panel de control') }}
-            </h2>
-            <span class="inline-flex items-center text-sm text-gray-500">
+            </h1>
+            <p class="text-sm text-slate-500">
                 {{ $mostrandoGlobal ? __('Mostrando métricas globales') : __('Métricas filtradas por tu almacén asignado') }}
-            </span>
+            </p>
         </div>
     </x-slot>
 
@@ -69,78 +69,80 @@
         })->all();
     @endphp
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <x-dashboard.stat-card
-                    :title="__('Pedidos registrados')"
-                    :value="$formatNumber($totalesGenerales['total_pedidos'] ?? 0)"
-                    :subtitle="__('Pedidos capturados en el sistema')"
-                    icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M3 7h18M3 12h18M3 17h18'/></svg>"
-                />
+    <section class="grid grid-cols-1 gap-6 md:grid-cols-2 2xl:grid-cols-4">
+        <x-tailadmin.metric-card
+            :title="__('Pedidos registrados')"
+            :value="$formatNumber($totalesGenerales['total_pedidos'] ?? 0)"
+            :subtitle="__('Pedidos capturados en el sistema')"
+            icon-classes="bg-indigo-100 text-indigo-600"
+            icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M3 7h18M3 12h18M3 17h18'/></svg>"
+        />
 
-                <x-dashboard.stat-card
-                    :title="__('Monto total')"
-                    :value="$formatCurrency($totalesGenerales['monto_total'] ?? 0)"
-                    :subtitle="__('Ingresos esperados por pedidos')"
-                    icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M12 8c-2.21 0-4 1.343-4 3s1.79 3 4 3 4 1.343 4 3-1.79 3-4 3m0-12c2.21 0 4 1.343 4 3m-4-3V4m0 16v-2'/></svg>"
-                />
+        <x-tailadmin.metric-card
+            :title="__('Monto total')"
+            :value="$formatCurrency($totalesGenerales['monto_total'] ?? 0)"
+            :subtitle="__('Ingresos esperados por pedidos')"
+            icon-classes="bg-emerald-100 text-emerald-600"
+            icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M12 8c-2.21 0-4 1.343-4 3s1.79 3 4 3 4 1.343 4 3-1.79 3-4 3m0-12c2.21 0 4 1.343 4 3m-4-3V4m0 16v-2'/></svg>"
+        />
 
-                <x-dashboard.stat-card
-                    :title="__('Monto cobrado')"
-                    :value="$formatCurrency($totalesGenerales['monto_pagado'] ?? 0)"
-                    :subtitle="__('Pagos aplicados a pedidos')"
-                    icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9 12l2 2 4-4m4.5 2a9.5 9.5 0 11-19 0 9.5 9.5 0 0119 0z'/></svg>"
-                />
+        <x-tailadmin.metric-card
+            :title="__('Monto cobrado')"
+            :value="$formatCurrency($totalesGenerales['monto_pagado'] ?? 0)"
+            :subtitle="__('Pagos aplicados a pedidos')"
+            icon-classes="bg-sky-100 text-sky-600"
+            icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M9 12l2 2 4-4m4.5 2a9.5 9.5 0 11-19 0 9.5 9.5 0 0119 0z'/></svg>"
+        />
 
-                <x-dashboard.stat-card
-                    :title="__('Saldo pendiente')"
-                    :value="$formatCurrency(($totalesGenerales['monto_total'] ?? 0) - ($totalesGenerales['monto_pagado'] ?? 0))"
-                    :subtitle="__('Importe restante por cobrar')"
-                    icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'/></svg>"
-                />
-            </div>
+        <x-tailadmin.metric-card
+            :title="__('Saldo pendiente')"
+            :value="$formatCurrency(($totalesGenerales['monto_total'] ?? 0) - ($totalesGenerales['monto_pagado'] ?? 0))"
+            :subtitle="__('Importe restante por cobrar')"
+            icon-classes="bg-amber-100 text-amber-600"
+            icon="<svg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'/></svg>"
+        />
+    </section>
 
-            <div class="grid gap-6 lg:grid-cols-2">
-                <x-dashboard.status-table
-                    :title="__('Pedidos por estado')"
-                    :rows="$pedidosRows"
-                    :columns="[
-                        ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'monto_total', 'label' => __('Monto total'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'monto_pagado', 'label' => __('Monto cobrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'saldo', 'label' => __('Saldo pendiente'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                    ]"
-                >
-                    {{ __('Estados consolidados de los pedidos registrados.') }}
-                </x-dashboard.status-table>
+    <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <x-tailadmin.data-table-card
+            :title="__('Pedidos por estado')"
+            :rows="$pedidosRows"
+            :columns="[
+                ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto_total', 'label' => __('Monto total'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto_pagado', 'label' => __('Monto cobrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'saldo', 'label' => __('Saldo pendiente'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+            ]"
+        >
+            {{ __('Estados consolidados de los pedidos registrados.') }}
+        </x-tailadmin.data-table-card>
 
-                <x-dashboard.status-table
-                    :title="__('Resumen de pagos')"
-                    :rows="$pagosRows"
-                    :columns="[
-                        ['key' => 'total', 'label' => __('Cobros'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'monto', 'label' => __('Monto registrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'monto_pagado', 'label' => __('Monto pagado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                        ['key' => 'saldo', 'label' => __('Saldo'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                    ]"
-                >
-                    {{ __('Detalle de cobros pendientes y completados según estado de pago.') }}
-                </x-dashboard.status-table>
-            </div>
+        <x-tailadmin.data-table-card
+            :title="__('Resumen de pagos')"
+            :rows="$pagosRows"
+            :columns="[
+                ['key' => 'total', 'label' => __('Cobros'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto', 'label' => __('Monto registrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto_pagado', 'label' => __('Monto pagado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'saldo', 'label' => __('Saldo'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+            ]"
+        >
+            {{ __('Detalle de cobros pendientes y completados según estado de pago.') }}
+        </x-tailadmin.data-table-card>
+    </section>
 
-            <x-dashboard.status-table
-                :title="$mostrandoGlobal ? __('Rendimiento por almacén') : __('Resumen de tu almacén')"
-                :rows="$almacenRows"
-                :columns="[
-                    ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                    ['key' => 'monto_total', 'label' => __('Monto total'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                    ['key' => 'monto_pagado', 'label' => __('Monto cobrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                    ['key' => 'saldo', 'label' => __('Saldo pendiente'), 'class' => 'text-right', 'headerClass' => 'text-right'],
-                ]"
-            >
-                {{ $mostrandoGlobal ? __('Comparativo de desempeño entre almacenes.') : __('Detalle de movimientos del almacén asignado.') }}
-            </x-dashboard.status-table>
-        </div>
-    </div>
+    <section>
+        <x-tailadmin.data-table-card
+            :title="$mostrandoGlobal ? __('Rendimiento por almacén') : __('Resumen de tu almacén')"
+            :rows="$almacenRows"
+            :columns="[
+                ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto_total', 'label' => __('Monto total'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'monto_pagado', 'label' => __('Monto cobrado'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+                ['key' => 'saldo', 'label' => __('Saldo pendiente'), 'class' => 'text-right', 'headerClass' => 'text-right'],
+            ]"
+        >
+            {{ $mostrandoGlobal ? __('Comparativo de desempeño entre almacenes.') : __('Detalle de movimientos del almacén asignado.') }}
+        </x-tailadmin.data-table-card>
+    </section>
 </x-app-layout>
