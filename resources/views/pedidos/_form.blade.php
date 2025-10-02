@@ -45,27 +45,15 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-            <x-input-label for="almacen_id" value="{{ __('Almacén origen') }}" />
-            <select id="almacen_id" name="almacen_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">{{ __('Seleccione un almacén') }}</option>
-                @foreach ($almacenes as $id => $nombre)
-                    <option value="{{ $id }}" @selected(old('almacen_id', $pedido->almacen_id ?? '') == $id)>{{ $nombre }}</option>
-                @endforeach
-            </select>
-            <x-input-error :messages="$errors->get('almacen_id')" class="mt-2" />
-        </div>
-        <div>
-            <x-input-label for="almacen_destino_id" value="{{ __('Almacén destino') }}" />
-            <select id="almacen_destino_id" name="almacen_destino_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                <option value="">{{ __('Seleccione un almacén destino') }}</option>
-                @foreach ($almacenes as $id => $nombre)
-                    <option value="{{ $id }}" @selected(old('almacen_destino_id', $pedido->almacen_destino_id ?? '') == $id)>{{ $nombre }}</option>
-                @endforeach
-            </select>
-            <x-input-error :messages="$errors->get('almacen_destino_id')" class="mt-2" />
-        </div>
+    <div>
+        <x-input-label for="almacen_id" value="{{ __('Almacén') }}" />
+        <select id="almacen_id" name="almacen_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <option value="">{{ __('Seleccione un almacén') }}</option>
+            @foreach ($almacenes as $id => $nombre)
+                <option value="{{ $id }}" @selected(old('almacen_id', $pedido->almacen_id ?? '') == $id)>{{ $nombre }}</option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('almacen_id')" class="mt-2" />
     </div>
 
     <div>

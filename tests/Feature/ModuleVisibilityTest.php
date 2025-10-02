@@ -99,7 +99,6 @@ class ModuleVisibilityTest extends TestCase
             'tienda_id' => $tienda->id,
             'vendedor_id' => $vendedor->id,
             'almacen_id' => $almacenUno->id,
-            'almacen_destino_id' => $almacenUno->id,
             'encargado_id' => $encargado->id,
         ]);
 
@@ -107,7 +106,6 @@ class ModuleVisibilityTest extends TestCase
             'tienda_id' => $tienda->id,
             'vendedor_id' => $vendedor->id,
             'almacen_id' => $almacenDos->id,
-            'almacen_destino_id' => $almacenDos->id,
             'encargado_id' => $encargado->id,
         ]);
 

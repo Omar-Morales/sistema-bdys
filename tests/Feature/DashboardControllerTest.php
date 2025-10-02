@@ -51,7 +51,6 @@ class DashboardControllerTest extends TestCase
             ->for($tienda)
             ->for($vendedor)
             ->for($almacenNorte, 'almacen')
-            ->for($almacenNorte, 'almacenDestino')
             ->for($encargadoNorte, 'encargado')
             ->create([
                 'monto_total' => 1000,
@@ -64,7 +63,6 @@ class DashboardControllerTest extends TestCase
             ->for($tienda)
             ->for($vendedor)
             ->for($almacenSur, 'almacen')
-            ->for($almacenSur, 'almacenDestino')
             ->for($encargadoSur, 'encargado')
             ->create([
                 'monto_total' => 500,
@@ -128,7 +126,6 @@ class DashboardControllerTest extends TestCase
             ->for($tienda)
             ->for($vendedor)
             ->for($almacenCentral, 'almacen')
-            ->for($almacenCentral, 'almacenDestino')
             ->for($encargado, 'encargado')
             ->create([
                 'monto_total' => 800,
@@ -141,7 +138,6 @@ class DashboardControllerTest extends TestCase
             ->for($tienda)
             ->for($vendedor)
             ->for($almacenExterno, 'almacen')
-            ->for($almacenExterno, 'almacenDestino')
             ->for(User::factory()->create(['almacen_id' => $almacenExterno->id]), 'encargado')
             ->create([
                 'monto_total' => 1200,

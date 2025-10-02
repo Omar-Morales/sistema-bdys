@@ -65,7 +65,6 @@ class Pedido extends Model
         'tienda_id',
         'vendedor_id',
         'almacen_id',
-        'almacen_destino_id',
         'encargado_id',
         'monto_total',
         'monto_pagado',
@@ -105,11 +104,6 @@ class Pedido extends Model
     public function almacen()
     {
         return $this->belongsTo(Almacen::class);
-    }
-
-    public function almacenDestino()
-    {
-        return $this->belongsTo(Almacen::class, 'almacen_destino_id');
     }
 
     public function encargado()

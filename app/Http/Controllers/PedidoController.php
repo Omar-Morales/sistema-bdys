@@ -16,7 +16,7 @@ class PedidoController extends Controller
 {
     public function index(): View
     {
-        $pedidos = Pedido::with(['tienda', 'vendedor', 'almacen', 'almacenDestino', 'encargado'])
+        $pedidos = Pedido::with(['tienda', 'vendedor', 'almacen', 'encargado'])
             ->latest()
             ->paginate(20);
 
@@ -42,7 +42,7 @@ class PedidoController extends Controller
 
     public function show(Pedido $pedido): View
     {
-        $pedido->load(['tienda', 'vendedor', 'almacen', 'almacenDestino', 'encargado', 'detalles.producto']);
+        $pedido->load(['tienda', 'vendedor', 'almacen', 'encargado', 'detalles.producto']);
         $cambio = max((float) $pedido->monto_pagado - (float) $pedido->monto_total, 0);
 
         return view('pedidos.show', compact('pedido', 'cambio'));
@@ -50,7 +50,7 @@ class PedidoController extends Controller
 
     public function edit(Pedido $pedido): View
     {
-        $pedido->load(['tienda', 'vendedor', 'almacen', 'almacenDestino', 'encargado']);
+        $pedido->load(['tienda', 'vendedor', 'almacen', 'encargado']);
 
         return view('pedidos.edit', array_merge(['pedido' => $pedido], $this->formData()));
     }
