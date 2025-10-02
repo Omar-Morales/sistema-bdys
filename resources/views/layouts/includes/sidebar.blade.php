@@ -1,4 +1,5 @@
 <aside
+    x-cloak
     class="fixed inset-y-0 left-0 z-30 flex w-72 flex-col bg-slate-900 text-slate-100 shadow-xl transition-transform duration-300 ease-in-out lg:static lg:translate-x-0"
     :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
 >
