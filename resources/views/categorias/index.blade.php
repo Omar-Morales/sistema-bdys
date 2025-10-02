@@ -5,8 +5,9 @@
                 {{ __('Categorías') }}
             </h2>
             @can('manage categorias')
-                <a href="{{ route('categorias.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring ring-indigo-200 transition ease-in-out duration-150">
-                    {{ __('Nueva categoría') }}
+                <a href="{{ route('categorias.create') }}"
+                    class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    {{ __('Agregar categoría') }}
                 </a>
             @endcan
         </div>
@@ -46,18 +47,23 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $categoria->created_at?->format('d/m/Y H:i') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                             @can('manage categorias')
-                                                <a href="{{ route('categorias.edit', $categoria) }}" class="text-indigo-600 hover:text-indigo-900">
-                                                    {{ __('Editar') }}
-                                                </a>
-                                                <form action="{{ route('categorias.destroy', $categoria) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('¿Eliminar esta categoría?') }}');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-800">
-                                                        {{ __('Eliminar') }}
-                                                    </button>
-                                                </form>
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="{{ route('categorias.edit', $categoria) }}"
+                                                        class="inline-flex items-center rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                        {{ __('Actualizar') }}
+                                                    </a>
+                                                    <form action="{{ route('categorias.destroy', $categoria) }}" method="POST"
+                                                        onsubmit="return confirm('{{ __('¿Eliminar esta categoría?') }}');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="inline-flex items-center rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-red-600 transition duration-150 ease-in-out hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                                            {{ __('Eliminar') }}
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             @endcan
                                         </td>
                                     </tr>
