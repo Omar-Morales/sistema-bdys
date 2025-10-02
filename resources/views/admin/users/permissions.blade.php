@@ -19,21 +19,31 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach ($modules as $moduleKey => $module)
                             @php
-                                $permissionName = $module['permission'];
+                                $permissionLabels = [
+                                    'view' => __('Ver'),
+                                    'manage' => __('Gestionar'),
+                                ];
                             @endphp
-                            <label class="flex items-start space-x-2">
-                                <input
-                                    type="checkbox"
-                                    name="permissions[]"
-                                    value="{{ $permissionName }}"
-                                    class="mt-1 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
-                                    {{ in_array($permissionName, $userPermissions, true) ? 'checked' : '' }}
-                                >
-                                <span>
-                                    <span class="block font-medium text-gray-700">{{ $module['label'] }}</span>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <span class="block font-medium text-gray-800">{{ $module['label'] }}</span>
+                                @isset($module['route'])
                                     <span class="block text-xs text-gray-500">{{ $module['route'] }}</span>
-                                </span>
-                            </label>
+                                @endisset
+                                <div class="mt-3 space-y-2">
+                                    @foreach (($module['permissions'] ?? []) as $type => $permissionName)
+                                        <label class="flex items-center space-x-2 text-sm text-gray-700">
+                                            <input
+                                                type="checkbox"
+                                                name="permissions[]"
+                                                value="{{ $permissionName }}"
+                                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+                                                {{ in_array($permissionName, $userPermissions, true) ? 'checked' : '' }}
+                                            >
+                                            <span>{{ $permissionLabels[$type] ?? ucfirst($type) }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
                         @endforeach
                     </div>
 

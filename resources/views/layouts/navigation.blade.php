@@ -13,11 +13,12 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @foreach (config('modules.menus') as $module)
-                        @continue(!isset($module['route'], $module['permission']))
                         @php
-                            $routeName = $module['route'];
-                            $canView = auth()->user()?->can($module['permission']);
+                            $routeName = $module['route'] ?? null;
+                            $viewPermission = $module['permissions']['view'] ?? null;
+                            $canView = $routeName && $viewPermission ? auth()->user()?->can($viewPermission) : false;
                         @endphp
+                        @continue(!$routeName || !$viewPermission)
                         @if ($canView && \Illuminate\Support\Facades\Route::has($routeName))
                             <x-nav-link :href="route($routeName)" :active="request()->routeIs($routeName) || request()->routeIs($routeName.'.*')">
                                 {{ __($module['label']) }}
@@ -77,11 +78,12 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @foreach (config('modules.menus') as $module)
-                @continue(!isset($module['route'], $module['permission']))
                 @php
-                    $routeName = $module['route'];
-                    $canView = auth()->user()?->can($module['permission']);
+                    $routeName = $module['route'] ?? null;
+                    $viewPermission = $module['permissions']['view'] ?? null;
+                    $canView = $routeName && $viewPermission ? auth()->user()?->can($viewPermission) : false;
                 @endphp
+                @continue(!$routeName || !$viewPermission)
                 @if ($canView && \Illuminate\Support\Facades\Route::has($routeName))
                     <x-responsive-nav-link :href="route($routeName)" :active="request()->routeIs($routeName) || request()->routeIs($routeName.'.*')">
                         {{ __($module['label']) }}

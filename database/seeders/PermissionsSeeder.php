@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsSeeder extends Seeder
@@ -19,21 +20,27 @@ class PermissionsSeeder extends Seeder
     {
         $modules = config('modules.menus');
 
-        $moduleKeys = array_keys($modules);
-
         collect($modules)
-            ->map(fn (array $module, string $key) => $module['permission'] ?? 'view '.$key)
+            ->map(fn (array $module, string $key) => $this->normalizePermissions($module, $key))
+            ->flatten()
+            ->unique()
             ->each(fn (string $permission) => Permission::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => 'web',
             ]));
+    }
 
-        collect(self::CRUD_MODULES)
-            ->filter(fn (string $module) => in_array($module, $moduleKeys, true))
-            ->map(fn (string $module) => 'manage '.$module)
-            ->each(fn (string $permission) => Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web',
-            ]));
+    /**
+     * @return array<int, string>
+     */
+    private function normalizePermissions(array $module, string $moduleKey): array
+    {
+        $permissions = $module['permissions'] ?? [];
+
+        if (!isset($permissions['view'])) {
+            $permissions = ['view' => $module['permission'] ?? 'view '.$moduleKey] + $permissions;
+        }
+
+        return array_values(Arr::whereNotNull($permissions));
     }
 }
