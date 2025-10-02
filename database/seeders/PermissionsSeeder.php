@@ -7,15 +7,33 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionsSeeder extends Seeder
 {
+    public const CRUD_MODULES = [
+        'categorias',
+        'productos',
+        'tiendas',
+        'vendedores',
+        'pedidos',
+    ];
+
     public function run(): void
     {
         $modules = config('modules.menus');
 
-        foreach ($modules as $key => $label) {
-            Permission::firstOrCreate([
-                'name' => 'view '.$key,
+        $moduleKeys = array_keys($modules);
+
+        collect($moduleKeys)
+            ->map(fn (string $module) => 'view '.$module)
+            ->each(fn (string $permission) => Permission::firstOrCreate([
+                'name' => $permission,
                 'guard_name' => 'web',
-            ]);
-        }
+            ]));
+
+        collect(self::CRUD_MODULES)
+            ->filter(fn (string $module) => in_array($module, $moduleKeys, true))
+            ->map(fn (string $module) => 'manage '.$module)
+            ->each(fn (string $permission) => Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]));
     }
 }

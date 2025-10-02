@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RolesSeeder extends Seeder
@@ -11,13 +10,24 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         $modules = config('modules.menus');
-        $allPermissions = Permission::pluck('name')->all();
+        $moduleKeys = array_keys($modules);
+
+        $viewPermissions = collect($moduleKeys)
+            ->map(fn (string $module) => 'view '.$module);
+
+        $managePermissions = collect(PermissionsSeeder::CRUD_MODULES)
+            ->filter(fn (string $module) => in_array($module, $moduleKeys, true))
+            ->map(fn (string $module) => 'manage '.$module);
+
+        $supervisorPermissions = $viewPermissions
+            ->merge($managePermissions)
+            ->all();
 
         $supervisor = Role::firstOrCreate([
             'name' => 'Supervisor',
             'guard_name' => 'web',
         ]);
-        $supervisor->syncPermissions($allPermissions);
+        $supervisor->syncPermissions($supervisorPermissions);
 
         $encargadoPermissions = collect(['dashboard', 'productos', 'pedidos', 'cobros'])
             ->filter(fn (string $module) => array_key_exists($module, $modules))
