@@ -70,5 +70,21 @@ return [
                 'view' => 'view admin permisos',
             ],
         ],
+        'admin_roles' => [
+            'label' => 'Roles',
+            'route' => 'admin.roles.index',
+            'permissions' => [
+                'view' => 'view admin roles',
+                'manage' => 'manage admin roles',
+            ],
+        ],
+        'admin_usuarios' => [
+            'label' => 'Usuarios',
+            'route' => 'admin.users.index',
+            'permissions' => [
+                'view' => 'view admin users',
+                'manage' => 'manage admin users',
+            ],
+        ],
     ],
 ];
