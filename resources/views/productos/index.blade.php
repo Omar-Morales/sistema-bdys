@@ -5,8 +5,9 @@
                 {{ __('Productos') }}
             </h2>
             @can('manage productos')
-                <a href="{{ route('productos.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none focus:border-indigo-700 focus:ring ring-indigo-200 transition ease-in-out duration-150">
-                    {{ __('Nuevo producto') }}
+                <a href="{{ route('productos.create') }}"
+                    class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    {{ __('Agregar producto') }}
                 </a>
             @endcan
         </div>
@@ -48,14 +49,23 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">
                                             S/ {{ number_format($producto->precio_referencial, 2) }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                                             @can('manage productos')
-                                                <a href="{{ route('productos.edit', $producto) }}" class="text-indigo-600 hover:text-indigo-900">{{ __('Editar') }}</a>
-                                                <form action="{{ route('productos.destroy', $producto) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('¿Eliminar este producto?') }}');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-800">{{ __('Eliminar') }}</button>
-                                                </form>
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="{{ route('productos.edit', $producto) }}"
+                                                        class="inline-flex items-center rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-600 transition duration-150 ease-in-out hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                        {{ __('Actualizar') }}
+                                                    </a>
+                                                    <form action="{{ route('productos.destroy', $producto) }}" method="POST"
+                                                        onsubmit="return confirm('{{ __('¿Eliminar este producto?') }}');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="inline-flex items-center rounded-md border border-red-200 bg-white px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-red-600 transition duration-150 ease-in-out hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                                            {{ __('Eliminar') }}
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             @endcan
                                         </td>
                                     </tr>
