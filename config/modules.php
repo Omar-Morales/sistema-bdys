@@ -72,7 +72,7 @@ return [
         ],
         'admin_roles' => [
             'label' => 'Roles',
-            'route' => 'admin.roles.index',
+            'route' => 'admin.roles.permissions.index',
             'permissions' => [
                 'view' => 'view admin roles',
                 'manage' => 'manage admin roles',
