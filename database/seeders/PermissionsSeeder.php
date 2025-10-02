@@ -21,8 +21,8 @@ class PermissionsSeeder extends Seeder
 
         $moduleKeys = array_keys($modules);
 
-        collect($moduleKeys)
-            ->map(fn (string $module) => 'view '.$module)
+        collect($modules)
+            ->map(fn (array $module, string $key) => $module['permission'] ?? 'view '.$key)
             ->each(fn (string $permission) => Permission::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => 'web',
