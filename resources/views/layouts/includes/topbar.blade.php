@@ -17,12 +17,29 @@
         </div>
     </div>
     <div class="flex items-center gap-4">
-        <div class="hidden items-center gap-3 rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-400 sm:flex">
+        <div class="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-500 shadow-sm sm:flex">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="7"></circle>
                 <path d="m20 20-3.5-3.5"></path>
             </svg>
-            <span>{{ __('Buscar...') }}</span>
+            <input
+                id="search-input"
+                type="search"
+                class="w-32 bg-transparent text-sm text-slate-600 placeholder:text-slate-400 focus:outline-none focus:ring-0 sm:w-48"
+                placeholder="{{ __('Buscar...') }}"
+                aria-label="{{ __('Buscar') }}"
+            >
+            <button
+                id="search-button"
+                type="button"
+                class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+            >
+                <span class="sr-only">{{ __('Buscar') }}</span>
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-3.5-3.5"></path>
+                </svg>
+            </button>
         </div>
         <x-dropdown align="right" width="56" content-classes="bg-white/95 p-2 backdrop-blur">
             <x-slot name="trigger">
