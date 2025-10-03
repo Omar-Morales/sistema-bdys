@@ -5,11 +5,9 @@
 ])
 
 @php
-    use Illuminate\\View\\ComponentSlot;
-
     $hasDescription = filled($description);
-    $hasActions = isset($actions) && $actions instanceof ComponentSlot && trim($actions->toHtml()) !== '';
-    $hasFooter = isset($footer) && $footer instanceof ComponentSlot && trim($footer->toHtml()) !== '';
+    $hasActions = isset($actions) && $actions instanceof \Illuminate\View\ComponentSlot && trim($actions->toHtml()) !== '';
+    $hasFooter = isset($footer) && $footer instanceof \Illuminate\View\ComponentSlot && trim($footer->toHtml()) !== '';
 @endphp
 
 <div

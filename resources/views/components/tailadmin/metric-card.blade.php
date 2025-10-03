@@ -9,12 +9,10 @@
 ])
 
 @php
-    use Illuminate\\View\\ComponentSlot;
-
-    $iconContent = $icon instanceof ComponentSlot ? $icon->toHtml() : $icon;
+    $iconContent = $icon instanceof \Illuminate\View\ComponentSlot ? $icon->toHtml() : $icon;
     $hasIcon = filled(trim((string) ($iconContent ?? '')));
 
-    $badgeContent = $badge instanceof ComponentSlot ? $badge->toHtml() : $badge;
+    $badgeContent = $badge instanceof \Illuminate\View\ComponentSlot ? $badge->toHtml() : $badge;
     $hasBadge = filled(trim((string) ($badgeContent ?? '')));
 
     $badgePalettes = [
