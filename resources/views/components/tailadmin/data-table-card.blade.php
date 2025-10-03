@@ -6,10 +6,8 @@
 ])
 
 @php
-    use Illuminate\\View\\ComponentSlot;
-
     $hasDescription = ! $slot->isEmpty();
-    $hasActions = isset($actions) && $actions instanceof ComponentSlot && trim($actions->toHtml()) !== '';
+    $hasActions = isset($actions) && $actions instanceof \Illuminate\View\ComponentSlot && trim($actions->toHtml()) !== '';
 @endphp
 
 <div
