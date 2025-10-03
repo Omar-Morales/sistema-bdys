@@ -2,6 +2,7 @@
     'title' => null,
     'rows' => [],
     'columns' => [],
+    'labelColumn' => __('Estado'),
     'emptyMessage' => 'No hay datos disponibles.',
 ])
 
@@ -46,7 +47,7 @@
                     <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
                         <tr>
                             <th scope="col" class="whitespace-nowrap px-6 py-3 text-left">
-                                {{ __('Estado') }}
+                                {{ $labelColumn }}
                             </th>
                             @foreach ($columns as $column)
                                 <th
