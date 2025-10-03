@@ -106,6 +106,7 @@
     <section class="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <x-tailadmin.data-table-card
             :title="__('Pedidos por estado')"
+            :label-column="__('Estado')"
             :rows="$pedidosRows"
             :columns="[
                 ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
@@ -119,6 +120,7 @@
 
         <x-tailadmin.data-table-card
             :title="__('Resumen de pagos')"
+            :label-column="__('Estado de pago')"
             :rows="$pagosRows"
             :columns="[
                 ['key' => 'total', 'label' => __('Cobros'), 'class' => 'text-right', 'headerClass' => 'text-right'],
@@ -134,6 +136,7 @@
     <section>
         <x-tailadmin.data-table-card
             :title="$mostrandoGlobal ? __('Rendimiento por almacén') : __('Resumen de tu almacén')"
+            :label-column="__('Almacén')"
             :rows="$almacenRows"
             :columns="[
                 ['key' => 'total', 'label' => __('Pedidos'), 'class' => 'text-right', 'headerClass' => 'text-right'],
