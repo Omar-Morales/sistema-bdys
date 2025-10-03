@@ -13,7 +13,13 @@
             <form method="GET" class="grid grid-cols-1 items-end gap-4 md:grid-cols-4">
                 <div>
                     <x-input-label for="fecha" value="{{ __('Fecha') }}" />
-                    <x-text-input id="fecha" type="date" name="fecha" class="mt-1 block w-full" :value="$fecha" />
+                    <x-text-input
+                        id="fecha"
+                        type="date"
+                        name="fecha"
+                        class="mt-1 block w-full"
+                        :value="$fecha?->toDateString()"
+                    />
                 </div>
                 <div>
                     <x-input-label for="almacen_id" value="{{ __('Almacén') }}" />
@@ -52,7 +58,7 @@
         >
             @forelse ($cierres as $cierre)
                 <tr class="odd:bg-white even:bg-slate-50">
-                    <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-900">{{ \Carbon\Carbon::parse($cierre->fecha)->format('d/m/Y') }}</td>
+                    <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-900">{{ optional($cierre->fecha)->format('d/m/Y') }}</td>
                     <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">{{ $cierre->almacen_nombre ?? __('Sin almacén') }}</td>
                     <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-700">S/ {{ number_format($cierre->total_monto, 2) }}</td>
                     <td class="whitespace-nowrap px-6 py-4 text-right text-sm text-slate-700">S/ {{ number_format($cierre->total_pagado, 2) }}</td>
